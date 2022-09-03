@@ -1,0 +1,41 @@
+.grid {
+    display: grid;
+    grid-gap: 16px;
+    padding: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(24%,1fr));
+    background: #EFEFBB;
+    background: -webkit-linear-gradient(to right, #D4D3DD, #EFEFBB);
+    background: linear-gradient(to right, #D4D3DD, #EFEFBB);
+}
+
+app-card {
+    width: 260px;
+    height: 350px;
+    padding: 8px;
+    background-color: slategrey;
+    border-radius: 10%;
+    margin-left: 20%;
+    box-shadow: 5px 6px 8px rgba(0, 0, 0, 0.3);
+    top: 0%;
+    position: relative;
+    transition: top ease 0.5s;
+    display: table;
+}
+
+app-card:hover {
+    top: -12px;
+    animation: 2s both myRotate;
+
+}
+
+@keyframes myRotate {
+    100%{transform: rotateY(180deg);}
+}
+
+pagination-controls {
+    text-align: center;
+}
+
+html {
+    scroll-behavior: smooth;
+}

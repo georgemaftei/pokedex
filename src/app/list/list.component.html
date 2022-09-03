@@ -1,0 +1,14 @@
+<div class="grid">
+  <app-card
+    *ngFor="
+      let pokemon of pokemons
+        | paginate
+          : { itemsPerPage: 12, currentPage: page, totalItems: totalPokemons }
+    "
+    [pokemon]="pokemon"
+  ></app-card>
+</div>
+
+<pagination-controls
+  (pageChange)="page = $event; pokemons = []; getPokemons()"
+></pagination-controls>

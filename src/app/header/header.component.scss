@@ -1,10 +1,13 @@
 header {
-    padding: 20px 0px;
+    padding: 35px;
     text-align: center;
-    background-color: seagreen;
+    background: #EFEFBB;
+    background: -webkit-linear-gradient(to right, #D4D3DD, #EFEFBB);
+    background: linear-gradient(to right, #D4D3DD, #EFEFBB);
 }
+
 header h1 {
-    text-transform: uppercase;
-    color: white;
-    letter-spacing: 3px;
+    color: black;
+    letter-spacing: 2px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
