@@ -2,28 +2,25 @@
     display: grid;
     grid-gap: 16px;
     padding: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(24%,1fr));
-    background: #EFEFBB;
-    background: -webkit-linear-gradient(to right, #D4D3DD, #EFEFBB);
-    background: linear-gradient(to right, #D4D3DD, #EFEFBB);
+    grid-template-columns: 8cm 8cm 8cm 8cm;
+    background: linear-gradient(to right, #D4D3DD, #bddda2);
 }
 
 app-card {
     width: 260px;
     height: 350px;
-    padding: 8px;
     background-color: slategrey;
     border-radius: 10%;
-    margin-left: 20%;
+    margin-left: 105%;
+    margin-top: 10%;
     box-shadow: 5px 6px 8px rgba(0, 0, 0, 0.3);
     top: 0%;
     position: relative;
     transition: top ease 0.5s;
-    display: table;
 }
 
 app-card:hover {
-    top: -12px;
+    top: -14px;
     animation: 2s both myRotate;
 
 }
@@ -34,8 +31,16 @@ app-card:hover {
 
 pagination-controls {
     text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 html {
     scroll-behavior: smooth;
+}
+
+img {
+    height: 120px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }

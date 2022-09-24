@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CardComponent } from '../card/card.component';
+import { concatMap, from, map, switchMap, take, toArray } from 'rxjs';
 import { DataService } from '../services/data.service';
 
 @Component({
@@ -20,21 +20,20 @@ export class ListComponent implements OnInit {
     this.getPokemons();
   }
 
-  getPokemons() {
-    this.dataService.getPokemons(12, this.page + 0)
-      .subscribe((response: any) => {
-        this.totalPokemons = response.count;
+  getPokemons(): void {
+    this.dataService.getPokemons(12, this.page + 0).pipe(
+      map((response: any) => response.results),
+      switchMap((items: any) => from(items).pipe(
+        concatMap((item: any) => this.dataService.getMoreData(item.name).pipe(map(response => {
+          this.pokemons.push(response);
 
-        response.results.forEach((result: { name: string; }) => {
-          this.dataService.getMoreData(result.name)
-            .subscribe((uniqResponse: any) => {
-              this.pokemons.push(uniqResponse);
-              console.log(this.pokemons);
-
-            });
-        });
-      });
+        }))),
+        toArray(),
+      )),
+      take(1)
+    ).subscribe((response: any) => {
+      this.totalPokemons = response.length;
+      console.log(this.pokemons)
+    });
   }
-
 }
-
