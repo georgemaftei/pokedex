@@ -1,16 +1,19 @@
 <div class="grid">
-  <app-card
-    *ngFor="
-      let pokemon of pokemons
-        | paginate
-          : { itemsPerPage: 12, currentPage: page, totalItems: totalPokemons }
-    "
-    [pokemon]="pokemon"
-  ></app-card>
+  <ng-container *ngIf="data$ | async as data; else showLoading">
+    <pokedex-card
+      *ngFor="
+        let pokemon of data.pokemons
+          | paginate
+            : {
+                itemsPerPage: itemsPerPage,
+                currentPage: currentPage,
+                totalItems: data.totalPokemons
+              }
+      "
+      [pokemon]="pokemon"
+    ></pokedex-card>
+  </ng-container>
+  <ng-template #showLoading>Loading pokemons</ng-template>
 </div>
 
-<img src="25-256884_png-pokeball-picture-transparent-library-pokemon-logo-png" alt="pokeball">
-
-<pagination-controls
-  (pageChange)="page = $event; pokemons = []; getPokemons()"
-></pagination-controls>
+<pagination-controls (pageChange)="pageChange($event)"></pagination-controls>

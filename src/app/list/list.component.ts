@@ -1,39 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { concatMap, from, map, switchMap, take, toArray } from 'rxjs';
-import { DataService } from '../services/data.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable, zip } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { DataService } from '../services';
+import { NamedAPIResource, NamedAPIResourceList } from '../types';
 
 @Component({
-  selector: 'app-list',
+  selector: 'pokedex-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListComponent implements OnInit {
-  pokemons: any[]=[]
-  page = 1;
-  totalPokemons!: number;
+export class ListComponent {
+  public itemsPerPage: number = 12;
+  // @TODO: currentPage becomes a BehaviorSubject in order to work with data$ -- 1 ora
+  public currentPage: number = 1;
+  // @TODO: document below -- ?
+  public data$: Observable<any> = this.dataService
+    .getPokemons(this.itemsPerPage, this.currentPage + 0)
+    .pipe(
+      switchMap((pokemonsData: NamedAPIResourceList) =>
+        zip(
+          pokemonsData.results.map((pokemon: NamedAPIResource) =>
+            this.dataService.getPokemon(pokemon.name)
+          )
+        ).pipe(
+          map((pokemons: any[]) => ({
+            pokemons,
+            totalPokemons: pokemonsData,
+          }))
+        )
+      )
+    );
 
-  constructor(
-    private dataService: DataService
-  ) { }
+  constructor(private dataService: DataService) {}
 
-  ngOnInit(): void {
-    this.getPokemons();
-  }
-
-  getPokemons(): void {
-    this.dataService.getPokemons(12, this.page + 0).pipe(
-      map((response: any) => response.results),
-      switchMap((items: any) => from(items).pipe(
-        concatMap((item: any) => this.dataService.getMoreData(item.name).pipe(map(response => {
-          this.pokemons.push(response);
-
-        }))),
-        toArray(),
-      )),
-      take(1)
-    ).subscribe((response: any) => {
-      this.totalPokemons = response.length;
-      console.log(this.pokemons)
-    });
+  public pageChange(currentPage: number): void {
+    this.currentPage = currentPage;
   }
 }

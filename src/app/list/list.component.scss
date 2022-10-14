@@ -6,7 +6,7 @@
     background: linear-gradient(to right, #D4D3DD, #bddda2);
 }
 
-app-card {
+pokedex-card {
     width: 260px;
     height: 350px;
     background-color: slategrey;
@@ -19,7 +19,7 @@ app-card {
     transition: top ease 0.5s;
 }
 
-app-card:hover {
+pokedex-card:hover {
     top: -14px;
     animation: 2s both myRotate;
 
